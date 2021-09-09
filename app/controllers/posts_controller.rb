@@ -3,16 +3,31 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
+  def new
+    @post = Post.new
+  end
+
   def edit
     @post = Post.find(params[:id])
   end
 
-  def update
-    @post = Post.find(params[:id])
-
-    @post.update(post_params)
-
+  def create
+    @post = Post.new(post_params)
+    if @post.save
     redirect_to post_path(@post)
+    else
+      render :new
+    end
+  end
+
+  def update
+      @post = Post.find(params[:id].to_i)
+      @post.update(post_params)
+    if @post.save
+      redirect_to post_path(@post)
+    else 
+      render :edit
+    end
   end
 
   private
